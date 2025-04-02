@@ -1,0 +1,68 @@
+---
+config:
+  layout: fixed
+---
+flowchart TB
+ subgraph subGraph0["End User / External Tools"]
+        A1["Developer / End User"]
+  end
+ subgraph subGraph1["Interfaces Layer"]
+        CLI["CLI Interface"]
+        REST["REST API"]
+        WEB["Web UI"]
+  end
+ subgraph subGraph2["Services Layer"]
+        ORCH["Search Orchestrator"]
+        FILETRAV["File/Directory Traversal"]
+        CACHE["Search History & Cache"]
+        OUTFMT["Output Formatters"]
+  end
+ subgraph subGraph3["Search Strategies"]
+        PATT["PatternSearchStrategy"]
+        SEM["SemanticSearchStrategy"]
+        NER["NERSearchStrategy"]
+  end
+ subgraph subGraph4["Core Layer"]
+        SE["SearchEngine"]
+        subGraph3
+  end
+ subgraph subGraph5["Infrastructure & Support"]
+        CONFIG["Configuration & Settings"]
+        LOG["Logger"]
+        PERSIST["Persistence"]
+        EXCEPT["Custom Exceptions"]
+  end
+    A1 --> CLI & REST & WEB
+    CLI --> ORCH
+    REST --> ORCH
+    WEB --> ORCH
+    ORCH --> FILETRAV & CACHE & OUTFMT & SE & CONFIG
+    SE --> PATT & SEM & NER & CONFIG & LOG & EXCEPT
+    FILETRAV --> CONFIG
+    CACHE --> PERSIST & CONFIG
+    PATT --> LOG & EXCEPT
+    SEM --> LOG & EXCEPT & PERSIST
+    NER --> LOG & EXCEPT
+    OUTFMT --> CONFIG
+    n1["Store/Retrieve Embeddings"]
+    n1@{ shape: text}
+     A1:::entity
+     CLI:::component
+     REST:::component
+     WEB:::component
+     ORCH:::component
+     FILETRAV:::component
+     CACHE:::component
+     OUTFMT:::component
+     PATT:::searchClass
+     SEM:::searchClass
+     NER:::searchClass
+     SE:::component
+     CONFIG:::infrastructure
+     LOG:::infrastructure
+     PERSIST:::infrastructure
+     EXCEPT:::infrastructure
+    classDef entity fill:#fff,stroke:#333,stroke-width:1px,color:#000,font-weight:bold
+    classDef component fill:#dae8fc,stroke:#6c8ebf,stroke-width:1px,color:#000
+    classDef searchClass fill:#f8cecc,stroke:#b85450,stroke-width:1px,color:#000
+    classDef infrastructure fill:#d5e8d4,stroke:#82b366,stroke-width:1px,color:#000
