@@ -34,7 +34,7 @@ Currently, it only supports plain text files/files that can be encoded in UTF-8.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pattern-seek.git
+git clone https://github.com/mubbie/pattern-seek.git
 cd pattern-seek
 
 # Create a virtual environment (optional but recommended)
