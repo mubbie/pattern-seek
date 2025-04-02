@@ -21,17 +21,6 @@ def format_matches(
     colored: bool = True,
     include_file_info: bool = False
 ) -> str:
-    """
-    Format search matches as a string.
-    
-    Args:
-        matches: List of match dictionaries, or list of file match dictionaries
-        colored: Whether to use ANSI color codes in the output
-        include_file_info: Whether matches include file information
-        
-    Returns:
-        Formatted string representation of the matches
-    """
     result = []
     
     # Check if we're dealing with file matches
@@ -51,6 +40,7 @@ def format_matches(
                 
             # Format matches for this file
             file_result = format_matches(file_matches, colored, include_file_info=False)
+            
             # Indent all lines
             indented = "\n".join(f"  {line}" for line in file_result.splitlines())
             result.append(indented)
@@ -67,43 +57,46 @@ def format_matches(
                     context_line_num = match["line"] - len(match["context_before"]) + i
                     result.append(f"Line {context_line_num}: {line}")
             
-            # Add the match line
+            # Get the full line if available
             line_num = match["line"]
             match_text = match["match"]
+            line_content = None
             
-            # Get the full line if available
+            # If we have context information, try to extract the original line
             if "context_before" in match or "context_after" in match:
-                # The line must be one of the context lines
-                all_lines = []
+                all_context_lines = []
                 if "context_before" in match:
-                    all_lines.extend(match["context_before"])
-                if "context_after" in match:
-                    all_lines.extend(match["context_after"])
-                    
-                # We need to find the line that contains the match
-                for line in all_lines:
-                    if match_text in line:
-                        full_line = line
-                        break
+                    all_context_lines.extend(match["context_before"])
+                
+                # The current line should be at this position
+                current_line_idx = len(match.get("context_before", []))
+                if "context_line" in match:
+                    # Use the stored context line if available
+                    line_content = match["context_line"]
                 else:
-                    # If not found, just use the match itself
-                    full_line = match_text
-            else:
-                full_line = match_text
+                    # Try to find the match in context lines
+                    for i, line in enumerate(all_context_lines):
+                        if match_text in line:
+                            line_content = line
+                            break
+            
+            # If we couldn't find the original line, just use the match text
+            if line_content is None:
+                line_content = match_text
             
             # Highlight the match in the line
-            start = full_line.find(match_text)
+            start = line_content.find(match_text)
             if start >= 0:
                 end = start + len(match_text)
                 highlighted = (
-                    full_line[:start] + 
+                    line_content[:start] + 
                     f"{color}{Style.BRIGHT}{match_text}{reset}" + 
-                    full_line[end:]
+                    line_content[end:]
                 )
                 result.append(f"Line {line_num}: {highlighted}")
             else:
-                # If we can't find the match in the line, just show the match
-                result.append(f"Line {line_num}: {color}{Style.BRIGHT}{match_text}{reset}")
+                # If we can't find the match in the line, just show the line
+                result.append(f"Line {line_num}: {line_content}")
             
             # Add context after match if available
             if "context_after" in match:
@@ -115,7 +108,6 @@ def format_matches(
             result.append("")
     
     return "\n".join(result)
-
 
 def print_matches(
     matches: Union[List[Dict], List[Dict[str, Union[str, List[Dict]]]]],

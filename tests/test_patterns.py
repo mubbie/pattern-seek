@@ -364,3 +364,48 @@ class TestPatternMatching:
         
         with pytest.raises(ValueError):
             find_pattern_matches(text, pattern_type="invalid_pattern")
+            
+    def test_text_search(self):
+        """Test searching for regular text"""
+        text = """
+        This is a sample text with some keywords.
+        We want to find the word 'python' in this text.
+        Python is case-insensitive by default.
+        We also want to match 'Python3' as a partial word.
+        """
+        
+        # Test case-insensitive search
+        results = find_pattern_matches(
+            text, 
+            pattern_type="text",
+            text_pattern="python",
+            case_sensitive=False
+        )
+        
+        # Should find 3 matches: 'python' and 'Python' * 2
+        assert len(results) == 3
+        assert all(r["type"] == "text" for r in results)
+        
+        # Test whole word search
+        results = find_pattern_matches(
+            text, 
+            pattern_type="text",
+            text_pattern="python",
+            case_sensitive=False,
+            whole_word=True
+        )
+        
+        # Should only find the standalone 'python' and 'Python', not 'Python3'
+        assert len(results) == 2
+        
+        # Test case-sensitive search
+        results = find_pattern_matches(
+            text, 
+            pattern_type="text",
+            text_pattern="python",
+            case_sensitive=True
+        )
+        
+        # Should only find 'python', not 'Python'
+        assert len(results) == 1        
+    

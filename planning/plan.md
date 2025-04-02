@@ -11,7 +11,7 @@ Build a simple utility to search text files.
 
 In order of priority, going from simplest to most complex:
 
-- [ ] **Pattern-based Search**: Find specific types of data (GUIDs, emails, dates, phone numbers, etc.) using RegEx patterns.
+- [x] **Pattern-based Search**: Find specific types of data (GUIDs, emails, dates, phone numbers, etc.) using RegEx patterns.
 - [ ] **Semantic Search**: Find content based on meaning using embedding models that capture semantic similarity between query and the document text.
 - [ ] **Entity Recognition**: Identify people, organizations, and locations in input text using NLP models.
 - [ ] **Multi-file/Directory Search**: Search across multiple files and directories, or use wildcards to define search scope.

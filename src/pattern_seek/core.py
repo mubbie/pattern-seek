@@ -7,7 +7,10 @@ from pattern_seek.patterns import find_pattern_matches
 def search_file(
     file_path: str,
     pattern_type: Union[str, List[str]],
-    context_lines: int = 0
+    context_lines: int = 0,
+    text_pattern: Optional[str] = None,
+    case_sensitive: bool = False,
+    whole_word: bool = False
 ) -> List[Dict]:
     """
     Search a file for patterns of the specified type(s).
@@ -16,6 +19,9 @@ def search_file(
         file_path: Path to the file to search
         pattern_type: Type(s) of patterns to search for
         context_lines: Number of lines to include before and after each match
+        text_pattern: Optional text to search for (for regular text search)
+        case_sensitive: Whether text search should be case-sensitive
+        whole_word: Whether to match whole words only for text search
         
     Returns:
         A list of dictionaries containing information about each match
@@ -26,15 +32,24 @@ def search_file(
     # if it fails, allow the error to propagate
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
-        
-    # find pattern matches
-    matches = find_pattern_matches(content, pattern_type)
+    
+    # Find pattern matches
+    matches = find_pattern_matches(
+        content, 
+        pattern_type,
+        text_pattern=text_pattern,
+        case_sensitive=case_sensitive,
+        whole_word=whole_word
+    )
     
     # Add context if requested
     if context_lines > 0:
         lines = content.splitlines()
         for match in matches:
             line_idx = match["line"] - 1  # Convert to zero-based index
+            
+            # Store the original line that contains the match
+            match["context_line"] = lines[line_idx]
             
             # Get context before the match
             start_idx = max(0, line_idx - context_lines)
@@ -49,7 +64,10 @@ def search_file(
 def search_files(
     path: Union[str, List[str]],
     pattern_type: Union[str, List[str]],
-    context_lines: int = 0
+    context_lines: int = 0,
+    text_pattern: Optional[str] = None,
+    case_sensitive: bool = False,
+    whole_word: bool = False
 ) -> List[Dict]:
     """
     Search multiple files or directories for patterns of the specified type(s).
@@ -58,6 +76,9 @@ def search_files(
         path: File path, directory path, wildcard pattern, or list of paths
         pattern_type: Type(s) of patterns to search for
         context_lines: Number of lines to include before and after each match
+        text_pattern: Optional text to search for (for regular text search)
+        case_sensitive: Whether text search should be case-sensitive
+        whole_word: Whether to match whole words only for text search
         
     Returns:
         A list of dictionaries, one per file, containing file path and matches
@@ -90,7 +111,14 @@ def search_files(
     for file_path in file_paths:
         if os.path.isfile(file_path):
             try:
-                matches = search_file(file_path, pattern_type, context_lines)
+                matches = search_file(
+                    file_path, 
+                    pattern_type, 
+                    context_lines,
+                    text_pattern=text_pattern,
+                    case_sensitive=case_sensitive,
+                    whole_word=whole_word
+                )
                 results.append({
                     "file": file_path,
                     "matches": matches
