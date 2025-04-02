@@ -6,6 +6,8 @@ A command-line utility for searching text files using pattern recognition. Patte
 
 As the project evolves, I'll add more features, improve the code, tests, and documentation.
 
+Currently, it only supports plain text files/files that can be encoded in UTF-8. Other formats are currently not supported, and feedback on how to support is much welcome.
+
 ## Features
 
 - **Pattern-based search**: Find various data types using regex patterns
