@@ -1,0 +1,56 @@
+# build a project with pyproject.toml: https://stackoverflow.com/questions/64150719/how-to-write-a-minimally-working-pyproject-toml-file-that-can-install-packages/64151860#64151860
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# project configuration
+[project]
+name = "pattern-seek"
+version = "0.1.0"
+description = "A utility to search text files using various patterns and techniques"
+readme = "README.md"
+authors = [
+    {name = "Mubbie Idoko", email = "midoko.dev@gmail.com"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "click>=8.0.0", # CLI lib: https://click.palletsprojects.com/en/stable/
+    "colorama>=0.4.4", # produce colored terminal text: https://pypi.org/project/colorama/
+    "regex>=2021.4.4", # handle regular expressions: https://pypi.org/project/regex/
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0", # testing: https://pypi.org/project/pytest/
+    "pytest-cov>=2.12.0", # test coverage: https://pypi.org/project/pytest-cov/
+
+    # linting and code formatting tools
+    "black>=22.3.0", # code formatter: https://pypi.org/project/black/
+    "isort>=5.10.1", # import formatter: https://pycqa.github.io/isort/
+    "flake8>=4.0.1", # linter: https://flake8.pycqa.org/en/latest/
+]
+
+[project.scripts]
+pattern-seek = "pattern_seek.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+pythonpath = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
