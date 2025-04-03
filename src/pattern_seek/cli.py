@@ -55,18 +55,6 @@ def main(
     
     PATHS: One or more files or directories to search.
     Wildcards are supported, e.g., *.txt
-    
-    Args:
-        paths: List of file paths or directories to search
-        pattern: List of pattern types to search for
-        text: Text pattern to search for when using the "text" pattern type
-        case_sensitive: Whether text search should be case-sensitive
-        whole_word: Whether to match whole words only for text search
-        context: Number of context lines to include before and after matches
-        no_color: Whether to disable colored output
-        
-    Returns:
-        None
     """
     
      # Determine which patterns to search for
