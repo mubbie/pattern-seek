@@ -5,11 +5,6 @@ from typing import List, Optional
 
 from pattern_seek.core import search_files
 from pattern_seek.output import print_matches
-from pattern_seek.transform import (
-    transform_csv, 
-    print_csv_matches, 
-    save_csv_matches
-)
 
 @click.command()
 @click.argument('paths', nargs=-1, required=True)
@@ -46,31 +41,6 @@ from pattern_seek.transform import (
     is_flag=True,
     help='Disable colored output'
 )
-@click.option(
-    '--transform', '-TT',
-    type=click.Choice(['csv',]),
-    help='Transform structured file formats (e.g., CSV) based on query'
-)
-@click.option(
-    '--query', '-q',
-    type=str,
-    help='Search query for transform mode'
-)
-@click.option(
-    '--column', '-col',
-    type=str,
-    help='Column name to search in for transform mode'
-)
-@click.option(
-    '--matchword', '-m',
-    is_flag=True,
-    help='Match whole words only for transform mode'
-)
-@click.option(
-    '--save', '-s',
-    is_flag=True,
-    help='Save transformed results to a new file'
-)
 def main(
     paths: List[str],
     pattern: List[str],
@@ -78,12 +48,7 @@ def main(
     case_sensitive: bool,
     whole_word: bool,
     context: int,
-    no_color: bool,
-    transform: Optional[str],
-    query: Optional[str],
-    column: Optional[str],
-    matchword: bool,
-    save: bool
+    no_color: bool
 ) -> None:
     """
     Pattern-seek: Search text files for specific patterns.
@@ -91,33 +56,8 @@ def main(
     PATHS: One or more files or directories to search.
     Wildcards are supported, e.g., *.txt
     """
-
-    # Handle --transform option
-    if transform == 'csv':
-        if not query:
-            click.echo("Error: --query must be provided when using --transform csv", err=True)
-            sys.exit(1)
-
-        for path in paths:
-            try:
-                result = transform_csv(
-                    path,
-                    query=query,
-                    column=column,
-                    case_sensitive=case_sensitive,
-                    matchword=matchword,
-                    save=save
-                )
-                
-                if not save:
-                    print_csv_matches(result)
-
-            except Exception as e:
-                click.echo(f"Error transforming {path}: {str(e)}", err=True)
-
-        return # Skip the rest of the pattern-based logic
     
-    # Determine which patterns to search for
+     # Determine which patterns to search for
     if 'all' in pattern:
         pattern_types = ['email', 'guid', 'date', 'url', 'ip']
     else:
