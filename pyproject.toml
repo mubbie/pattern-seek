@@ -24,6 +24,7 @@ dependencies = [
     "click>=8.0.0", # CLI lib: https://click.palletsprojects.com/en/stable/
     "colorama>=0.4.4", # produce colored terminal text: https://pypi.org/project/colorama/
     "regex>=2021.4.4", # handle regular expressions: https://pypi.org/project/regex/
+    "tabulate>=0.9.0" # pretty-print tabular data http://pypi.org/project/tabulate/
 ]
 
 [project.optional-dependencies]
