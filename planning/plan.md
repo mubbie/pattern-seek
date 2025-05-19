@@ -18,13 +18,13 @@ In order of priority, going from simplest to most complex:
 - [ ] **Context Display**: Show surrounding lines of text around matches for better understanding of results.
 - [ ] **Configurable Output Formats**: Support for colored terminal output, JSON, CSV, or markdown for easier integration into other tools/workflows.
 - [ ] **Search History & Caching**: Remember previous searches and cache results for frequently searched files.
-- [ ] **Regular Expression Support**: Allow customer regex pattern search beyond the built in ones.
-- [ ] **File Type Filtering**: Limit searches to specifi file types or exclude certain files.
+- [ ] **Regular Expression Support**: Allow custom regex pattern search beyond the built in ones.
+- [ ] **File Type Filtering**: Limit searches to specific file types or exclude certain files.
 - [ ] **Syntax Highlighting**: Colorize code or highlighted matched patterns for better readability.
 - [ ] **Batch Processing**: Run multiple search queries at once and combine results.
 - [ ] **Vector Database Integration**: Store embeddings in a vector database for faster semantic search on large datasets/files.
-- [ ] **Customer AI Models**: Allows users to specify their own embedding or NER models.
-- [ ] **Search Within Results**: Perform secondary searches withing initial search results.
+- [ ] **Custom AI Models**: Allows users to specify their own embedding or NER models.
+- [ ] **Search Within Results**: Perform secondary searches within initial search results.
 - [ ] **Diff/Compare View**: Compare search results across different files or versions
 - [ ] **Saved Searches/Templates**: Save complex search queries as templates for reuse.
 - [ ] **Web Interface**: Add a simple web UI for non-technical users.
